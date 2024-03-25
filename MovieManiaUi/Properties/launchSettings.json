@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MovieManiaUi (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MovieManiaUi (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

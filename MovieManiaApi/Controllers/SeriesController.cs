@@ -22,24 +22,42 @@ namespace MovieManiaApi.Controllers
 
         // GET: api/Series
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Serie>>> GetSerie()
+        public async Task<ActionResult<IEnumerable<SerieDto>>> GetSeries()
         {
-          if (_context.Serie == null)
-          {
-              return NotFound();
-          }
-            return await _context.Serie.ToListAsync();
+            var series = await _context.Series
+                .Include(sg => sg.SerieGenres)
+                    .ThenInclude(sg => sg.Genre)
+                .ToListAsync();
+
+            var serieDtos = new List<SerieDto>();
+
+            foreach (var serie in series) 
+            { 
+                var genreNames = serie.SerieGenres.Select(sg => sg.Genre.Name).ToList();
+
+                serieDtos.Add(new SerieDto 
+                {
+                    Id = serie.Id,
+                    Title = serie.Title,
+                    Platform = serie.Platform,
+                    ReleaseYear = serie.ReleaseYear,
+                    Rating = serie.Rating,
+                    Genres = genreNames
+                });
+            }
+
+            return serieDtos;
         }
 
         // GET: api/Series/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Serie>> GetSerie(int id)
         {
-          if (_context.Serie == null)
+          if (_context.Series == null)
           {
               return NotFound();
           }
-            var serie = await _context.Serie.FindAsync(id);
+            var serie = await _context.Series.FindAsync(id);
 
             if (serie == null)
             {
@@ -85,11 +103,11 @@ namespace MovieManiaApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Serie>> PostSerie(Serie serie)
         {
-          if (_context.Serie == null)
+          if (_context.Series == null)
           {
               return Problem("Entity set 'AppDbcontext.Serie'  is null.");
           }
-            _context.Serie.Add(serie);
+            _context.Series.Add(serie);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetSerie", new { id = serie.Id }, serie);
@@ -99,17 +117,17 @@ namespace MovieManiaApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSerie(int id)
         {
-            if (_context.Serie == null)
+            if (_context.Series == null)
             {
                 return NotFound();
             }
-            var serie = await _context.Serie.FindAsync(id);
+            var serie = await _context.Series.FindAsync(id);
             if (serie == null)
             {
                 return NotFound();
             }
 
-            _context.Serie.Remove(serie);
+            _context.Series.Remove(serie);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -117,7 +135,7 @@ namespace MovieManiaApi.Controllers
 
         private bool SerieExists(int id)
         {
-            return (_context.Serie?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Series?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

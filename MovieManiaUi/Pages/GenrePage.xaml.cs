@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using MovieManiaUi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,19 +14,69 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace MovieManiaUi.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class GenrePage : Page
     {
         public GenrePage()
         {
             this.InitializeComponent();
+            LoadGenre();
+        }
+
+        public async void LoadGenre()
+        {
+            try
+            {
+                var apiHandler = new ApiHandler();
+                var genres = await apiHandler.GetGenresAsync();
+
+                GenreListView.ItemsSource = genres;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while loading genres: {ex.Message}");
+            }
+        }
+
+        private void RefreshGenre_Click(object sender, RoutedEventArgs e)
+        {
+            LoadGenre();
+        }
+
+        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                string searchText = searchTextBox.Text.ToLower();
+
+                if (string.IsNullOrWhiteSpace(searchText))
+                {
+                    this.LoadGenre();
+                }
+                else
+                {
+                    var apiHandler = new ApiHandler();
+                    var genres = await apiHandler.GetGenresAsync();
+                    var filteredGenres = genres.Where(g => g.Name.ToLower().Contains(searchText)).ToList();
+
+                    GenreListView.ItemsSource = filteredGenres;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while searching genres: {ex.Message}");
+            }
+        }
+
+        private void ReturnButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(DashboardPage));
+        }
+
+        private void CreateGenre_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(CreateGenrePage));
         }
     }
 }

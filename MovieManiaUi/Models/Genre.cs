@@ -1,7 +1,7 @@
 ﻿using MovieManiaUi.Models;
 using System.Collections.Generic;
 
-namespace MovieManiaApi.Models
+namespace MovieManiaUi.Models
 {
     public class Genre
     {

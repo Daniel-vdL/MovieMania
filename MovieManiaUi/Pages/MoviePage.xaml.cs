@@ -25,6 +25,7 @@ namespace MovieManiaUi.Pages
             this.InitializeComponent();
             LoadFilms();
             LoadReleaseYears();
+            LoadGenre();
         }
 
         public async void LoadFilms()
@@ -100,8 +101,54 @@ namespace MovieManiaUi.Pages
             }
             else if (int.TryParse(selectedYear, out int year))
             {
-                var filteredFilms = films.Where(film => film.ReleaseYear == year).ToList();
+                var filteredFilms = films.Where(f => f.ReleaseYear == year).ToList();
                 FilmListView.ItemsSource = filteredFilms;
+            }
+        }
+
+        private async void LoadGenre()
+        {
+            try
+            {
+                var apiHandler = new ApiHandler();
+                var genres = await apiHandler.GetGenresAsync();
+
+                genreComboBox.Items.Clear();
+
+                genreComboBox.Items.Add(new ComboBoxItem { Content = "All" });
+
+                foreach (var genre in genres)
+                {
+                    genreComboBox.Items.Add(new ComboBoxItem { Content = genre.Name });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while loading genres: {ex.Message}");
+            }
+        }
+
+        private async void genreComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                var apiHandler = new ApiHandler();
+                var films = await apiHandler.GetFilmsAsync();
+                string selectedGenre = (genreComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+
+                if (selectedGenre == "All")
+                {
+                    LoadFilms();
+                }
+                else
+                {
+                    var filteredFilms = films.Where(f => f.Genres.Contains(selectedGenre)).ToList();
+                    FilmListView.ItemsSource = filteredFilms;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while filtering films by genre: {ex.Message}");
             }
         }
 
@@ -112,7 +159,7 @@ namespace MovieManiaUi.Pages
 
         private void CreateFilm_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(CreateFilmPage));
         }
     }
 }

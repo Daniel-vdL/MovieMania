@@ -62,7 +62,7 @@
                     <TextBlock Text="Go back"/>
                 </StackPanel>
             </Button>
-            <Button Style="{StaticResource ButtonStyle}" x:Name="RefreshFilms" Click="RefreshFilms_Click">
+            <Button Style="{StaticResource ButtonStyle}" x:Name="RefreshFilms" Click="RefreshFilms_Click" Margin="0 0 10 0">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Margin="0 0 5 0" Symbol="Refresh"/>
                     <TextBlock Text="Refresh"/>
@@ -70,8 +70,8 @@
             </Button>
             <Button Style="{StaticResource ButtonStyle}" x:Name="CreateFilm" Click="CreateFilm_Click">
                 <StackPanel Orientation="Horizontal">
-                    <SymbolIcon Margin="0 0 5 0" Symbol="Forward"/>
                     <TextBlock Text="Create Film"/>
+                    <SymbolIcon Margin="5 0 0 0" Symbol="Forward"/>
                 </StackPanel>
             </Button>
             <StackPanel Orientation="Horizontal" Padding="15">
@@ -81,6 +81,12 @@
             <StackPanel Orientation="Horizontal" Padding="15">
                 <TextBlock VerticalAlignment="Center" Margin="0 0 5 0" Text="Filter by Release Year:"/>
                 <ComboBox MinWidth="100" x:Name="releaseYearComboBox" SelectionChanged="releaseYearComboBox_SelectionChanged">
+                    <ComboBoxItem Content="All"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Padding="15">
+                <TextBlock VerticalAlignment="Center" Margin="0 0 5 0" Text="Filter by Genrer:"/>
+                <ComboBox MinWidth="100" x:Name="genreComboBox" SelectionChanged="genreComboBox_SelectionChanged">
                     <ComboBoxItem Content="All"/>
                 </ComboBox>
             </StackPanel>

@@ -1,4 +1,4 @@
-﻿using MovieManiaApi.Models;
+﻿using MovieManiaUi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +33,23 @@ namespace MovieManiaUi.Models
             };
 
             return JsonSerializer.Deserialize<List<Film>>(content, options);
+        }
+
+        public async Task<List<Serie>> GetSeriesAsync()
+        {
+            string url = "https://localhost:7193/api/Series";
+
+            var response = await _client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            return JsonSerializer.Deserialize<List<Serie>>(content, options);
         }
 
         public async Task<List<Genre>> GetGenresAsync()

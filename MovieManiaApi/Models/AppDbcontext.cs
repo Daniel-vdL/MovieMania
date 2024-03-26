@@ -6,6 +6,7 @@ namespace MovieManiaApi.Models
     public class AppDbcontext : DbContext
     {
         public DbSet<Film> Films { get; set; }
+        public DbSet<Serie> Series { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<FilmGenre> FilmGenres { get; set; }
         public DbSet<SerieGenre> SerieGenres { get; set; }
@@ -77,7 +78,5 @@ namespace MovieManiaApi.Models
                 new SerieGenre { Id = 4, SerieId = 2, GenreId = 4 }
             );
         }
-
-        public DbSet<MovieManiaApi.Models.Serie> Serie { get; set; } = default!;
     }
 }

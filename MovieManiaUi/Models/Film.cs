@@ -11,5 +11,7 @@ namespace MovieManiaUi.Models
         public int ReleaseYear { get; set; }
         public int Rating { get; set; }
         public List<string> Genres { get; set; }
+
+        public string GenresAsString => string.Join(", ", Genres);
     }
 }

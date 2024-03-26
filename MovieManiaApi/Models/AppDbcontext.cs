@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MovieManiaApi.Models;
 
 namespace MovieManiaApi.Models
 {
@@ -56,7 +57,17 @@ namespace MovieManiaApi.Models
                 new FilmGenre { Id = 1, FilmId = 1, GenreId = 1 },
                 new FilmGenre { Id = 2, FilmId = 1, GenreId = 9 },
                 new FilmGenre { Id = 3, FilmId = 2, GenreId = 2 },
-                new FilmGenre { Id = 4, FilmId = 2, GenreId = 3 }
+                new FilmGenre { Id = 4, FilmId = 2, GenreId = 3 },
+                new FilmGenre { Id = 5, FilmId = 3, GenreId = 2 },
+                new FilmGenre { Id = 6, FilmId = 3, GenreId = 3 },
+                new FilmGenre { Id = 7, FilmId = 4, GenreId = 3 },
+                new FilmGenre { Id = 8, FilmId = 4, GenreId = 9 },
+                new FilmGenre { Id = 9, FilmId = 5, GenreId = 2 },
+                new FilmGenre { Id = 10, FilmId = 5, GenreId = 3 },
+                new FilmGenre { Id = 11, FilmId = 6, GenreId = 1 },
+                new FilmGenre { Id = 12, FilmId = 6, GenreId = 9 },
+                new FilmGenre { Id = 13, FilmId = 7, GenreId = 4 },
+                new FilmGenre { Id = 14, FilmId = 7, GenreId = 7 }
             );
 
             modelBuilder.Entity<SerieGenre>().HasData(
@@ -66,5 +77,7 @@ namespace MovieManiaApi.Models
                 new SerieGenre { Id = 4, SerieId = 2, GenreId = 4 }
             );
         }
+
+        public DbSet<MovieManiaApi.Models.Serie> Serie { get; set; } = default!;
     }
 }

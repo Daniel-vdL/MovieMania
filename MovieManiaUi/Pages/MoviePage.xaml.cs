@@ -109,5 +109,10 @@ namespace MovieManiaUi.Pages
         {
             this.Frame.Navigate(typeof(DashboardPage));
         }
+
+        private void CreateFilm_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

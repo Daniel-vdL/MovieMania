@@ -101,16 +101,51 @@ namespace MovieManiaApi.Controllers
         // POST: api/Films
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Film>> PostFilm(Film film)
+        public async Task<ActionResult<Film>> PostFilm(FilmDto filmDto)
         {
-          if (_context.Films == null)
-          {
-              return Problem("Entity set 'AppDbcontext.Films'  is null.");
-          }
+            if (filmDto == null)
+            {
+                return BadRequest("Film data is null.");
+            }
+
+            var film = new Film
+            {
+                Title = filmDto.Title,
+                Platform = filmDto.Platform,
+                ReleaseYear = filmDto.ReleaseYear,
+                Rating = filmDto.Rating
+            };
+
             _context.Films.Add(film);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFilm", new { id = film.Id }, film);
+            foreach (var genreName in filmDto.Genres)
+            {
+                var genre = await _context.Genres.FirstOrDefaultAsync(g => g.Name == genreName);
+                if (genre != null)
+                {
+                    var filmGenre = new FilmGenre
+                    {
+                        FilmId = film.Id,
+                        GenreId = genre.Id
+                    };
+                    _context.FilmGenres.Add(filmGenre);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            var filmDtoResponse = new FilmDto
+            {
+                Id = film.Id,
+                Title = film.Title,
+                Platform = film.Platform,
+                ReleaseYear = film.ReleaseYear,
+                Rating = film.Rating,
+                Genres = filmDto.Genres
+            };
+
+            return CreatedAtAction("GetFilm", new { id = film.Id }, filmDtoResponse);
         }
 
         // DELETE: api/Films/5

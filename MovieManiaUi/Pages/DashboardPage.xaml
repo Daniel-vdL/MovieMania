@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Page
     x:Class="MovieManiaUi.Pages.DashboardPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -44,7 +43,7 @@
 
         <StackPanel Style="{StaticResource StackPanelStyle}" Grid.Row="1">
             <StackPanel HorizontalAlignment="Center" Margin="0 10 0 10" Orientation="Horizontal">
-                <Button Style="{StaticResource ButtonStyle}" Margin="0 0 10 0" x:Name="MoviePageButton" Click="MoviePageButton_Click">Movie Page</Button>
+                <Button Style="{StaticResource ButtonStyle}" Margin="0 0 10 0" x:Name="FilmPageButton" Click="FilmPageButton_Click">Film Page</Button>
                 <Button Style="{StaticResource ButtonStyle}" x:Name="SeriePageButton" Click="SeriePageButton_Click">Serie Page</Button>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" Margin="0 0 0 10" Orientation="Horizontal">

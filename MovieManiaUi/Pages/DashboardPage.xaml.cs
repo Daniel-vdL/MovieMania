@@ -22,9 +22,9 @@ namespace MovieManiaUi.Pages
             this.InitializeComponent();
         }
 
-        private void MoviePageButton_Click(object sender, RoutedEventArgs e)
+        private void FilmPageButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(MoviePage));
+            this.Frame.Navigate(typeof(FilmPage));
         }
 
         private void SeriePageButton_Click(object sender, RoutedEventArgs e)

@@ -9,23 +9,74 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.Json;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using MovieManiaUi.Models;
 
 namespace MovieManiaUi.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class CreateGenrePage : Page
     {
         public CreateGenrePage()
         {
             this.InitializeComponent();
+        }
+
+        private async void CreateGenreButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(NameTextbox.Text))
+            {
+                ContentDialog ErrorDialog = new ContentDialog
+                {
+                    Title = "Please fill in a name.",
+                    Content = "Click 'Ok' to continue",
+                    CloseButtonText = "Ok",
+                    XamlRoot = this.XamlRoot,
+                };
+
+                ContentDialogResult result = await ErrorDialog.ShowAsync();
+                return;
+            }
+
+            var genreName = NameTextbox.Text;
+
+            var genre = new Genre
+            {
+                Name = genreName
+            };
+
+            using var client = new HttpClient();
+
+            var genreJson = JsonSerializer.Serialize(genre);
+            var genreContext = new StringContent(genreJson, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("https://localhost:7193/api/Genres", genreContext);
+
+            if (response.IsSuccessStatusCode)
+            {
+                this.Frame.Navigate(typeof(GenrePage));
+            }
+            else
+            {
+                ContentDialog ErrorDialog = new ContentDialog
+                {
+                    Title = "Creation failed!",
+                    Content = "Click 'Ok' to continue",
+                    CloseButtonText = "Ok",
+                    XamlRoot = this.XamlRoot,
+                };
+
+                ContentDialogResult result = await ErrorDialog.ShowAsync();
+            }
+        }
+
+        private void ReturnButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(GenrePage));
         }
     }
 }

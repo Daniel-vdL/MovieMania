@@ -6,9 +6,73 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="#36393F">
 
-    <Grid>
+    <Page.Resources>
+        <Style x:Key="BorderStyle" TargetType="Border">
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0 10 0 10"/>
+            <Setter Property="CornerRadius"  Value="10"/>
+            <Setter Property="Background" Value="#2C2F33"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="#7289DA"/>
+        </Style>
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0 0 0 20"/>
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#7289DA"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="0 10 0 0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#7289DA"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="CornerRadius"  Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#7289DA"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="MinWidth" Value="256"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="CornerRadius"  Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#7289DA"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Page.Resources>
 
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource TextBlockStyle}" Grid.Row="0">Film Factory</TextBlock>
+
+        <Border Style="{StaticResource BorderStyle}" Grid.Row="1">
+            <StackPanel>
+                <TextBox Style="{StaticResource TextBoxStyle}" x:Name="TitleTextbox" PlaceholderText="Enter a title"/>
+                <ComboBox Style="{StaticResource ComboBoxStyle}" x:Name="GenreComboBox"/>
+                <TextBox Style="{StaticResource TextBoxStyle}" x:Name="PlatformTextbox" PlaceholderText="Enter a platform"/>
+                <TextBox Style="{StaticResource TextBoxStyle}" x:Name="ReleaseYearTextbox" PlaceholderText="Enter a release year"/>
+                <TextBox Style="{StaticResource TextBoxStyle}" x:Name="RatingTextbox" PlaceholderText="Rate this film 1 - 5"/>
+                <Button Style="{StaticResource ButtonStyle}" x:Name="CreateFilmButton" Click="CreateFilmButton_Click" Content="Create Film"/>
+            </StackPanel>
+        </Border>
+
+        <Button Grid.Row="2" x:Name="ReturnButton" Click="ReturnButton_Click" HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="#7289DA" FontWeight="Bold">
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon Margin="0 0 5 0" Symbol="Back"/>
+                <TextBlock Text="Go back"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </Page>

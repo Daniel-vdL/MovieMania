@@ -18,9 +18,9 @@ using Windows.Foundation.Collections;
 
 namespace MovieManiaUi.Pages
 {
-    public sealed partial class MoviePage : Page
+    public sealed partial class FilmPage : Page
     {
-        public MoviePage()
+        public FilmPage()
         {
             this.InitializeComponent();
             LoadFilms();
@@ -48,11 +48,11 @@ namespace MovieManiaUi.Pages
             LoadFilms();
         }
 
-        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                string searchText = searchTextBox.Text.ToLower();
+                string searchText = SearchTextBox.Text.ToLower();
 
                 if (string.IsNullOrWhiteSpace(searchText))
                 {
@@ -79,21 +79,21 @@ namespace MovieManiaUi.Pages
             var films = await apiHandler.GetFilmsAsync();
             var distinctYears = films.Select(f => f.ReleaseYear).Distinct().OrderByDescending(year => year);
 
-            releaseYearComboBox.Items.Clear();
+            ReleaseYearComboBox.Items.Clear();
 
-            releaseYearComboBox.Items.Add(new ComboBoxItem { Content = "All" });
+            ReleaseYearComboBox.Items.Add(new ComboBoxItem { Content = "All" });
 
             foreach (var year in distinctYears)
             {
-                releaseYearComboBox.Items.Add(new ComboBoxItem { Content = year.ToString() });
+                ReleaseYearComboBox.Items.Add(new ComboBoxItem { Content = year.ToString() });
             }
         }
 
-        private async void releaseYearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ReleaseYearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var apiHandler = new ApiHandler();
             var films = await apiHandler.GetFilmsAsync();
-            string selectedYear = (releaseYearComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            string selectedYear = (ReleaseYearComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
             if (selectedYear == "All")
             {
@@ -113,13 +113,13 @@ namespace MovieManiaUi.Pages
                 var apiHandler = new ApiHandler();
                 var genres = await apiHandler.GetGenresAsync();
 
-                genreComboBox.Items.Clear();
+                GenreComboBox.Items.Clear();
 
-                genreComboBox.Items.Add(new ComboBoxItem { Content = "All" });
+                GenreComboBox.Items.Add(new ComboBoxItem { Content = "All" });
 
                 foreach (var genre in genres)
                 {
-                    genreComboBox.Items.Add(new ComboBoxItem { Content = genre.Name });
+                    GenreComboBox.Items.Add(new ComboBoxItem { Content = genre.Name });
                 }
             }
             catch (Exception ex)
@@ -128,13 +128,13 @@ namespace MovieManiaUi.Pages
             }
         }
 
-        private async void genreComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void GenreComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 var apiHandler = new ApiHandler();
                 var films = await apiHandler.GetFilmsAsync();
-                string selectedGenre = (genreComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+                string selectedGenre = (GenreComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
                 if (selectedGenre == "All")
                 {
@@ -160,6 +160,12 @@ namespace MovieManiaUi.Pages
         private void CreateFilm_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(CreateFilmPage));
+        }
+
+        private void FilmListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedFilm = (Models.Film)e.ClickedItem;
+            Frame.Navigate(typeof(FilmDetailPage), selectedFilm);
         }
     }
 }

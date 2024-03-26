@@ -16,8 +16,11 @@
     <None Remove="Pages\CreateGenrePage.xaml" />
     <None Remove="Pages\CreateSeriePage.xaml" />
     <None Remove="Pages\DashboardPage.xaml" />
+    <None Remove="Pages\FilmDetailPage.xaml" />
+    <None Remove="Pages\FilmPage.xaml" />
+    <None Remove="Pages\GenreDetailPage.xaml" />
     <None Remove="Pages\GenrePage.xaml" />
-    <None Remove="Pages\MoviePage.xaml" />
+    <None Remove="Pages\SerieDetailPage.xaml" />
     <None Remove="Pages\SeriePage.xaml" />
   </ItemGroup>
 
@@ -46,6 +49,21 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Pages\GenreDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\SerieDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\FilmDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Pages\CreateGenrePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -71,7 +89,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\MoviePage.xaml">
+    <Page Update="Pages\FilmPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

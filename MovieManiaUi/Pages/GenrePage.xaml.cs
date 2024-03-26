@@ -44,11 +44,11 @@ namespace MovieManiaUi.Pages
             LoadGenre();
         }
 
-        private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private async void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                string searchText = searchTextBox.Text.ToLower();
+                string searchText = SearchTextBox.Text.ToLower();
 
                 if (string.IsNullOrWhiteSpace(searchText))
                 {
@@ -77,6 +77,12 @@ namespace MovieManiaUi.Pages
         private void CreateGenre_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(CreateGenrePage));
+        }
+
+        private void GenreListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedGenre = (Models.Genre)e.ClickedItem;
+            Frame.Navigate(typeof(GenreDetailPage), selectedGenre);
         }
     }
 }

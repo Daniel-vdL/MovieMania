@@ -93,16 +93,28 @@ namespace MovieManiaApi.Controllers
         // POST: api/Genres
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Genre>> PostGenre(Genre genre)
+        public async Task<ActionResult<Genre>> PostGenre(GenreDto genreDto)
         {
-          if (_context.Genres == null)
-          {
-              return Problem("Entity set 'AppDbcontext.Genres'  is null.");
-          }
+            if (genreDto == null)
+            {
+                return BadRequest("Genre data is null.");
+            }
+
+            var genre = new Genre
+            {
+                Name = genreDto.Name
+            };
+
             _context.Genres.Add(genre);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGenre", new { id = genre.Id }, genre);
+            var genreDtoResponse = new GenreDto
+            {
+                Id = genre.Id,
+                Name = genre.Name
+            };
+
+            return CreatedAtAction("GetGenre", new { id = genre.Id }, genreDtoResponse);
         }
 
         // DELETE: api/Genres/5

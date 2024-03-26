@@ -101,16 +101,53 @@ namespace MovieManiaApi.Controllers
         // POST: api/Series
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Serie>> PostSerie(Serie serie)
+        public async Task<ActionResult<Serie>> PostSerie(SerieDto serieDto)
         {
-          if (_context.Series == null)
-          {
-              return Problem("Entity set 'AppDbcontext.Serie'  is null.");
-          }
+            if (serieDto == null)
+            {
+                return BadRequest("Serie data is null.");
+            }
+
+            var serie = new Serie
+            {
+                Title = serieDto.Title,
+                Platform = serieDto.Platform,
+                ReleaseYear = serieDto.ReleaseYear,
+                Rating = serieDto.Rating
+            };
+
             _context.Series.Add(serie);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSerie", new { id = serie.Id }, serie);
+            if (serieDto.Genres != null && serieDto.Genres.Any())
+            {
+                foreach (var genreName in serieDto.Genres)
+                {
+                    var genre = await _context.Genres.FirstOrDefaultAsync(g => g.Name == genreName);
+                    if (genre != null)
+                    {
+                        var serieGenre = new SerieGenre
+                        {
+                            SerieId = serie.Id,
+                            GenreId = genre.Id
+                        };
+                        _context.SerieGenres.Add(serieGenre);
+                    }
+                }
+                await _context.SaveChangesAsync();
+            }
+
+            var serieDtoResponse = new SerieDto
+            {
+                Id = serie.Id,
+                Title = serie.Title,
+                Platform = serie.Platform,
+                ReleaseYear = serie.ReleaseYear,
+                Rating = serie.Rating,
+                Genres = serieDto.Genres
+            };
+
+            return CreatedAtAction("GetSerie", new { id = serie.Id }, serieDtoResponse);
         }
 
         // DELETE: api/Series/5

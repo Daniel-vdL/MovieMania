@@ -6,9 +6,92 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="#36393F">
+
+    <Page.Resources>
+        <Style x:Key="StackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Background" Value="#2C2F33"/>
+            <Setter Property="BorderBrush" Value="#7289DA"/>
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="BorderThickness" Value="0 2 0 0"/>
+        </Style>
+        <Style x:Key="StackPanel2Style" TargetType="StackPanel">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="MaxHeight" Value="355"/>
+            <Setter Property="Background" Value="#2C2F33"/>
+            <Setter Property="BorderBrush" Value="#7289DA"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="CornerRadius"  Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="MinWidth" Value="600"/>
+            <Setter Property="Margin" Value="0 0 0 10"/>
+            <Setter Property="CornerRadius"  Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="#7289DA"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Page.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel Style="{StaticResource StackPanel2Style}" Padding="10 10 10 0" HorizontalAlignment="Center" Orientation="Vertical" Grid.Row="0">
+            <TextBlock HorizontalAlignment="Center" x:Name="TitleTextBlock"
+           FontWeight="ExtraBold"
+           FontSize="24"/>
+            <TextBlock HorizontalAlignment="Center" x:Name="GenreTextBlock"
+           FontStyle="Italic" Margin="0 10 0 0"/>
+            <TextBlock HorizontalAlignment="Center" x:Name="PlatformTextBlock"
+           FontStyle="Italic"/>
+            <TextBlock HorizontalAlignment="Center" x:Name="ReleaseYearTextBlock"
+           FontStyle="Italic"/>
+            <TextBlock HorizontalAlignment="Center" x:Name="RatingTextBlock"
+           FontStyle="Italic" Margin="0 0 0 10"/>
+            <StackPanel MaxWidth="600">
+                <TextBox Style="{StaticResource TextBoxStyle}" PlaceholderText="Name" x:Name="SerieTitle"/>
+                <ComboBox Style="{StaticResource ComboBoxStyle}" x:Name="GenreComboBox">
+                </ComboBox>
+                <TextBox Style="{StaticResource TextBoxStyle}" PlaceholderText="Platform" x:Name="SeriePlatform"/>
+                <TextBox Style="{StaticResource TextBoxStyle}" PlaceholderText="Release Year" x:Name="SerieReleaseYear"/>
+                <TextBox Style="{StaticResource TextBoxStyle}" PlaceholderText="Rating" x:Name="SerieRating"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Style="{StaticResource StackPanelStyle}" Grid.Row="2" VerticalAlignment="Bottom">
+            <Button Style="{StaticResource ButtonStyle}" x:Name="ReturnButton" Click="ReturnButton_Click" Margin="20 0 10 0">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Margin="0 0 5 0" Symbol="Back"/>
+                    <TextBlock Text="Go back"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource ButtonStyle}" x:Name="EditSerieButton" Click="EditSerieButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Margin="0 0 5 0" Symbol="Edit"/>
+                    <TextBlock Text="Edit Serie"/>
+                </StackPanel>
+            </Button>
+            <Button Style="{StaticResource ButtonStyle}" x:Name="DeleteButton" Click="DeleteButton_Click" Margin="10 0 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Delete Serie"/>
+                    <SymbolIcon Margin="5 0 0 0" Symbol="Delete"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>

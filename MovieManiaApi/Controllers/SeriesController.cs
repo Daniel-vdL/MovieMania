@@ -70,14 +70,42 @@ namespace MovieManiaApi.Controllers
         // PUT: api/Series/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSerie(int id, Serie serie)
+        public async Task<IActionResult> PutSerie(int id, SerieDto serieDto)
         {
-            if (id != serie.Id)
+            if (id != serieDto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(serie).State = EntityState.Modified;
+            var serie = await _context.Series
+                .Include(s => s.SerieGenres)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (serie == null)
+            {
+                return NotFound();
+            }
+
+            serie.SerieGenres.Clear();
+
+            serie.Title = serieDto.Title;
+            serie.Platform = serieDto.Platform;
+            serie.ReleaseYear = serieDto.ReleaseYear;
+            serie.Rating = serieDto.Rating;
+
+            foreach (var genreName in serieDto.Genres)
+            {
+                var genre = await _context.Genres.FirstOrDefaultAsync(g => g.Name == genreName);
+                if (genre != null)
+                {
+                    var serieGenre = new SerieGenre
+                    {
+                        SerieId = serie.Id,
+                        GenreId = genre.Id
+                    };
+                    serie.SerieGenres.Add(serieGenre);
+                }
+            }
 
             try
             {

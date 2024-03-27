@@ -70,14 +70,42 @@ namespace MovieManiaApi.Controllers
         // PUT: api/Films/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFilm(int id, Film film)
+        public async Task<IActionResult> PutFilm(int id, FilmDto filmDto)
         {
-            if (id != film.Id)
+            if (id != filmDto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(film).State = EntityState.Modified;
+            var film = await _context.Films
+                .Include(f => f.FilmGenres)
+                .FirstOrDefaultAsync(f => f.Id == id);
+
+            if (film == null)
+            {
+                return NotFound();
+            }
+
+            film.FilmGenres.Clear();
+
+            film.Title = filmDto.Title;
+            film.Platform = filmDto.Platform;
+            film.ReleaseYear = filmDto.ReleaseYear;
+            film.Rating = filmDto.Rating;
+
+            foreach (var genreName in filmDto.Genres)
+            {
+                var genre = await _context.Genres.FirstOrDefaultAsync(g => g.Name == genreName);
+                if (genre != null)
+                {
+                    var filmGenre = new FilmGenre
+                    {
+                        FilmId = film.Id,
+                        GenreId = genre.Id
+                    };
+                    film.FilmGenres.Add(filmGenre);
+                }
+            }
 
             try
             {
